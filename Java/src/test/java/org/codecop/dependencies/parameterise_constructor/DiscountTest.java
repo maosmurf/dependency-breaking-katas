@@ -25,7 +25,10 @@ public class DiscountTest {
 
     @Test
     public void testOverOneThousand() {
-        Discount discount = new Discount();
+        MarketingCampaign marketingCampaign = mock(MarketingCampaign.class);
+        when(marketingCampaign.isCrazySalesDay()).thenReturn(false);
+        Discount discount = new Discount(marketingCampaign);
+
 
         Money net = new Money(1002);
         Money total = discount.discountFor(net);
@@ -33,5 +36,58 @@ public class DiscountTest {
         assertEquals(new Money(new BigDecimal("901.8")), total);
     }
 
+    @Test
+    public void testOneThousandWithActiveCampaign() {
+        MarketingCampaign marketingCampaign = mock(MarketingCampaign.class);
+        when(marketingCampaign.isCrazySalesDay()).thenReturn(false);
+        when(marketingCampaign.isActive()).thenReturn(true);
+        Discount discount = new Discount(marketingCampaign);
+
+
+        Money net = new Money(1000);
+        Money total = discount.discountFor(net);
+
+        assertEquals(new Money(new BigDecimal("950")), total);
+    }
+
+    @Test
+    public void testOneThousandWithInActiveCampain() {
+        MarketingCampaign marketingCampaign = mock(MarketingCampaign.class);
+        when(marketingCampaign.isCrazySalesDay()).thenReturn(false);
+        when(marketingCampaign.isActive()).thenReturn(false);
+        Discount discount = new Discount(marketingCampaign);
+
+
+        Money net = new Money(1000);
+        Money total = discount.discountFor(net);
+
+        assertEquals(new Money(new BigDecimal("1000")), total);
+    }
+
+    @Test
+    public void testZeroNetPrice() {
+        MarketingCampaign marketingCampaign = mock(MarketingCampaign.class);
+        when(marketingCampaign.isCrazySalesDay()).thenReturn(false);
+        when(marketingCampaign.isActive()).thenReturn(false);
+        Discount discount = new Discount(marketingCampaign);
+
+
+        Money net = new Money(0);
+        Money total = discount.discountFor(net);
+
+        assertEquals(new Money(new BigDecimal("0")), total);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testNullNetPrice() {
+        MarketingCampaign marketingCampaign = mock(MarketingCampaign.class);
+        when(marketingCampaign.isCrazySalesDay()).thenReturn(false);
+        when(marketingCampaign.isActive()).thenReturn(false);
+        Discount discount = new Discount(marketingCampaign);
+
+
+        Money net = null;
+        Money total = discount.discountFor(net);
+    }
 
 }
