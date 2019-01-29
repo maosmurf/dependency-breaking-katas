@@ -90,4 +90,17 @@ public class DiscountTest {
         Money total = discount.discountFor(net);
     }
 
+    @Test
+    public void testMinusValueNetPrice() {
+        MarketingCampaign marketingCampaign = mock(MarketingCampaign.class);
+        when(marketingCampaign.isCrazySalesDay()).thenReturn(true);
+        when(marketingCampaign.isActive()).thenReturn(false);
+        Discount discount = new Discount(marketingCampaign);
+
+
+        Money net = new Money(-100);
+        Money total = discount.discountFor(net);
+
+        assertEquals(new Money(new BigDecimal("-85")), total);
+    }
 }
