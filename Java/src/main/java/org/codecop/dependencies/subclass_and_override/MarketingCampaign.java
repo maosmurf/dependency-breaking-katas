@@ -9,7 +9,11 @@ public class MarketingCampaign {
     private final LongSupplier systemTimeMillis;
 
     public MarketingCampaign() {
-        systemTimeMillis = System::currentTimeMillis;
+        this(System::currentTimeMillis);
+    }
+
+    public MarketingCampaign(LongSupplier currentTimeMillis) {
+        systemTimeMillis = currentTimeMillis;
     }
 
     public boolean isActive() {
@@ -24,7 +28,7 @@ public class MarketingCampaign {
         return dayOfWeek().compareTo(DayOfWeek.FRIDAY) == 0;
     }
 
-    private DayOfWeek dayOfWeek() {
+    DayOfWeek dayOfWeek() {
         return LocalDateTime.now().getDayOfWeek();
     }
 }
