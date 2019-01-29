@@ -8,6 +8,10 @@ public class Discount {
         this.marketingCampaign = new MarketingCampaign();
     }
 
+    public Discount(MarketingCampaign marketingCampaign) {
+        this.marketingCampaign = marketingCampaign;
+    }
+
     public Money discountFor(Money netPrice) {
         if (marketingCampaign.isCrazySalesDay()) {
             return netPrice.reduceBy(15);
