@@ -50,4 +50,14 @@ public class MarketingCampaignTest {
         boolean isActive = campaign.isActive();
         assertTrue(isActive);
     }
+
+    @Test
+    public void testOddMillis() {
+        LongSupplier supplier = mock(LongSupplier.class);
+        long millisec = 3L;
+        MarketingCampaign campaign = new MarketingCampaign(supplier);
+        when(supplier.getAsLong()).thenReturn(millisec);
+        boolean isActive = campaign.isActive();
+        assertFalse(isActive);
+    }
 }
